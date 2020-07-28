@@ -115,7 +115,7 @@ public class EncryptionUtils {
     }
 
 
-    public static void main(String[] args) throws Exception {
+/*    public static void main(String[] args) throws Exception {
         String input = "sample input";
 
         // Not a real private key! Replace with your private key!
@@ -127,7 +127,7 @@ public class EncryptionUtils {
 
         String base64Signature = signSHA256RSA(input, strPk);
         System.out.println("Signature="+base64Signature);
-    }
+    }*/
 
     // Create base64 encoded signature using SHA256/RSA.
     public static String signSHA256RSA(String input, String strPk) throws Exception {
