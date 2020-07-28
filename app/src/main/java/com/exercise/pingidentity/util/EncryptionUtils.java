@@ -20,7 +20,7 @@ import javax.crypto.Cipher;
 import javax.inject.Singleton;/**/
 
 @Singleton
-public class EncryptionManager {
+public class EncryptionUtils {
 
     final private static String AES_NOPAD_TRANS = "RSA/ECB/PKCS1Padding";
     final private static String ANDROID_KEYSTORE = "AndroidKeyStore";
@@ -125,7 +125,7 @@ public class EncryptionManager {
                 + "Ldt0hAPNl4QKYWCfJm\nNf7Afqaa/RZq0+y/36v83NGENQ==\n"
                 + "-----END PRIVATE KEY-----\n";
 
-        String base64Signature = signSHA256RSA(input,strPk);
+        String base64Signature = signSHA256RSA(input, strPk);
         System.out.println("Signature="+base64Signature);
     }
 

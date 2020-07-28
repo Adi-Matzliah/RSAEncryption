@@ -17,11 +17,9 @@ public class BiometricViewModel extends ViewModel {
     private final StorageRepository storageRepo;
 
     private MutableLiveData<String> _decryptedText = new MutableLiveData<>();
-    SingleLiveEvent<Boolean> _isBiometricEnabled = new SingleLiveEvent<>();
+    private SingleLiveEvent<Boolean> _isBiometricEnabled = new SingleLiveEvent<>();
 
     private MutableLiveData<Boolean> _isTextVisible = new MutableLiveData<>(false);
-
-    private boolean isBiometricEnabled;
 
     @Inject
     BiometricViewModel(@NonNull StorageRepository storageRepo, @NonNull PushNotificationManager notificationManager) {
@@ -49,8 +47,8 @@ public class BiometricViewModel extends ViewModel {
     }
 
     public void initialize() {
-        isBiometricEnabled = storageRepo.getBiometricToggleStatus();
-        if (!isBiometricEnabled) {
+        _isBiometricEnabled.setValue(storageRepo.getBiometricToggleStatus());
+        if (!_isBiometricEnabled.getValue()) {
             setTextVisibility(true);
         }
     }

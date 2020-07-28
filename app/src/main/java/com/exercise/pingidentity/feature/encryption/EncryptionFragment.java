@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import com.exercise.pingidentity.R;
 import com.exercise.pingidentity.databinding.BiometricFragmentBinding;
@@ -57,7 +58,7 @@ public class EncryptionFragment extends DaggerFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         viewModel = new ViewModelProvider(this, viewModelFactory).get(EncryptionViewModel.class);
-        viewModel.createPushNotificationRegToken();
+        viewModel.initialize();
         initDataBinding();
         observeFields();
     }
@@ -68,9 +69,8 @@ public class EncryptionFragment extends DaggerFragment {
     }
 
     private void observeFields() {
-
         viewModel.isBiometricAlertDialogVisible().observe(getViewLifecycleOwner(), isActive -> {
-                new AlertDialog.Builder(getContext())
+            new AlertDialog.Builder(getContext())
                     .setMessage(R.string.biometric_alert_dialog_message)
                     .setPositiveButton(R.string.biometric_alert_dialog_settings_btn, (dialog, which) -> {
                         openLockScreenSettings();
@@ -79,8 +79,12 @@ public class EncryptionFragment extends DaggerFragment {
                         dialog.cancel();
                     })
                     .setCancelable(false)
-                        .show();
-            });
+                    .show();
+        });
+
+        viewModel.getToastText().observe(getViewLifecycleOwner(), text -> {
+            Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override

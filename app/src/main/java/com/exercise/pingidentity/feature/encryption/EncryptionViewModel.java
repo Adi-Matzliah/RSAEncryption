@@ -40,9 +40,11 @@ public class EncryptionViewModel extends ViewModel {
 
     public MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
 
-    public MutableLiveData<Boolean> isBiometricEnabled = new MutableLiveData<>(false);
+    public MutableLiveData<Boolean> isBiometricEnabled = new MutableLiveData<>();
 
     public MutableLiveData<String> userText = new MutableLiveData<>("");
+
+    private MutableLiveData<String> _toastText = new MutableLiveData<>();
 
     private SingleLiveEvent<Boolean> _isBiometricAlertDialogVisible = new SingleLiveEvent<>();
 
@@ -59,13 +61,18 @@ public class EncryptionViewModel extends ViewModel {
         this.notificationManager = notificationManager;
     }
 
+    public void initialize() {
+        isBiometricEnabled.setValue(storageRepo.getBiometricToggleStatus());
+        createPushNotificationRegToken();
+    }
+
     public void createPushNotificationRegToken() {
         notificationManager.createFcmRegistrationToken();
     }
 
-
     public void processText() {
         isLoading.setValue(true);
+        _toastText.setValue(String.format("Please minimize the app for at least %s sec", DELAY_IN_SEC));
     }
 
     public void createBackgroundTask() {
@@ -92,6 +99,10 @@ public class EncryptionViewModel extends ViewModel {
 
     public LiveData<Boolean> isBiometricAlertDialogVisible() {
         return _isBiometricAlertDialogVisible;
+    }
+
+    public LiveData<String> getToastText() {
+        return _toastText;
     }
 
     public void onBiometricToggle() {

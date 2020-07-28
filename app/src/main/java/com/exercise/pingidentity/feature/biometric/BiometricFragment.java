@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -54,7 +55,6 @@ public class BiometricFragment extends DaggerFragment {
         observeFields();
         viewModel.initialize();
         viewModel.setDecryptedText(getArguments().getString("decrypted_text"));
-        showBiometricDialog();
         return binding.getRoot();
     }
 
@@ -64,6 +64,11 @@ public class BiometricFragment extends DaggerFragment {
     }
 
     private void observeFields() {
+        viewModel.getIsBiometricEnabled().observe(getViewLifecycleOwner(), isEnabled -> {
+            if (isEnabled) {
+                showBiometricDialog();
+            }
+        });
     }
 
     private void showBiometricDialog() {
