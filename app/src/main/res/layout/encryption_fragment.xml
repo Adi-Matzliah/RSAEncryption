@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".feature.encryption.EncryptionFragment">
+
+    <data class="EncryptionFragmentBinding">
+
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="viewModel"
+            type="com.exercise.pingidentity.feature.encryption.EncryptionViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/left_gd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="40dp" />
+
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:indeterminate="true"
+            android:max="100"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/type_text_hint"
+            android:inputType="textPersonName"
+            android:text="@={viewModel.userText}"
+            android:enabled="@{!viewModel.isLoading}"
+            app:layout_constraintStart_toStartOf="@+id/left_gd"
+            app:layout_constraintTop_toBottomOf="@+id/encrypt_title_tv" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/sm_biometric_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/enable_disable_biometric_phase"
+            android:enabled="@{!viewModel.isLoading}"
+            android:checked='@={viewModel.isBiometricEnabled, default=false}'
+            android:onClick="@{()->viewModel.onBiometricToggle()}"
+            app:layout_constraintStart_toStartOf="@+id/left_gd"
+            app:layout_constraintTop_toBottomOf="@+id/editText"
+            app:switchPadding="10dp" />
+
+        <TextView
+            android:id="@+id/encrypt_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="@string/enter_text_to_encrypt_title"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toTopOf="@+id/editText"
+            app:layout_constraintStart_toStartOf="@+id/left_gd"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/send_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:onClick="@{() -> viewModel.processText()}"
+            android:enabled="@{!TextUtils.isEmpty(viewModel.userText) &amp;&amp; !viewModel.isLoading}"
+            android:text="@string/send"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sm_biometric_toggle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,105 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'  // Google Services plugin
+
+android {
+    compileSdkVersion versions.compileSdk
+
+    defaultConfig {
+        applicationId "com.exercise.pingidentity"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
+    implementation "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}"
+
+    // Android Support
+    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
+    implementation "androidx.legacy:legacy-support-v4:${versions.legacyCoreUtils}"
+    // RX Java
+    implementation "io.reactivex.rxjava2:rxjava:${versions.rxjava}"
+    implementation "io.reactivex.rxjava2:rxandroid:${versions.rxandroid}"
+
+/* Analytics */
+    // Firebase
+    implementation "com.google.firebase:firebase-analytics:${versions.firebaseAnalytics}"
+    implementation "com.google.firebase:firebase-messaging:${versions.firebaseMessaging}"
+
+/* --------- UI --------- */
+    // Navigation components
+    implementation "androidx.navigation:navigation-fragment:${versions.navigation}"
+    implementation "androidx.navigation:navigation-ui:${versions.navigation}"
+    // Material gadgets
+    implementation "com.google.android.material:material:${versions.material}"
+    // ConstraintLayout
+    implementation "androidx.constraintlayout:constraintlayout:${versions.constraintLayout}"
+
+/* --------- DI --------- */
+    // Dagger2
+    implementation "com.google.dagger:dagger:${versions.dagger}"
+    implementation "com.google.dagger:dagger-android:${versions.dagger}"
+    implementation "com.google.dagger:dagger-android-support:${versions.dagger}"
+    // if you use the support libraries
+    implementation "androidx.legacy:legacy-support-v4:${versions.legacyCoreUtils}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${versions.dagger}"
+    annotationProcessor "com.google.dagger:dagger-android-processor:${versions.dagger}"
+
+/* ----------- Data ---------- */
+    // ViewModel + Live Data
+    implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
+
+    // Java8 support for Lifecycles
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.3.0-alpha06'
+
+/* ----------- Storage ---------- */
+    // SharedPreferences
+    implementation "androidx.preference:preference:${versions.preference}"
+    // EncryptedSharedPreferences
+    implementation "androidx.security:security-crypto:${versions.crypto}"
+
+/* ----------- Network ---------- */
+    // Gson
+    implementation "com.google.code.gson:gson:${versions.gson}"
+    // Okhttp
+    implementation "com.squareup.okhttp3:okhttp:${versions.okhttp}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}"
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"// convert a retrofit call object to a RxJava object
+    implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
+
+/* ----------- Security ---------- */
+    implementation "androidx.biometric:biometric:${versions.biometric}"
+
+/* ----------- Utils ---------- */
+    // Timber
+    implementation "com.jakewharton.timber:timber:${versions.timber}"
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/encryptionFragment">
+
+    <fragment
+        android:id="@+id/encryptionFragment"
+        android:name="com.exercise.pingidentity.feature.encryption.EncryptionFragment"
+        android:label="encryption_fragment"
+        tools:layout="@layout/encryption_fragment" />
+    <fragment
+        android:id="@+id/biometricFragment"
+        android:name="com.exercise.pingidentity.feature.biometric.BiometricFragment"
+        android:label="biometric_fragment"
+        tools:layout="@layout/biometric_fragment" />
+
+</navigation>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "500475991041",
+    "firebase_url": "https://pingidentity---rsa.firebaseio.com",
+    "project_id": "pingidentity---rsa",
+    "storage_bucket": "pingidentity---rsa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:500475991041:android:84c95723cdc45ae8c69c00",
+        "android_client_info": {
+          "package_name": "com.exercise.pingidentity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "500475991041-37fjaqgu424sv44lt5ggq28ku0bg79gb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.exercise.pingidentity",
+            "certificate_hash": "47a7608053730f925c833f06876e8f9d99b7d09e"
+          }
+        },
+        {
+          "client_id": "500475991041-19kt6h65tge8u13drgqrokd5p11k6tsc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYX3ZvG92YvjdyIMcPP2nYHUA3DUf-GqQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "500475991041-19kt6h65tge8u13drgqrokd5p11k6tsc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
