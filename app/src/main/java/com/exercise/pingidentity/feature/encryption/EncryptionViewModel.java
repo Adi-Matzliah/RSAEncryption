@@ -12,7 +12,9 @@ import com.exercise.pingidentity.data.repository.RemoteRepository;
 import com.exercise.pingidentity.data.repository.StorageRepository;
 import com.exercise.pingidentity.feature.notification.PushNotificationManager;
 import com.exercise.pingidentity.network.response.FcmResponse;
+import com.exercise.pingidentity.util.EncryptionUtils;
 
+import java.security.KeyPair;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -50,6 +52,9 @@ public class EncryptionViewModel extends ViewModel {
 
     private final static int DELAY_IN_SEC = 3;
 
+    private String encryptedText;
+    private String signature;
+
     @NonNull
     private CompositeDisposable disposable = new CompositeDisposable();
 
@@ -70,8 +75,18 @@ public class EncryptionViewModel extends ViewModel {
         notificationManager.createFcmRegistrationToken();
     }
 
+    // 1) Create an RSA key pair for encrypting the string with a 1024 bit size and encrypt the string (please decide on the right PKCS padding).
+    // 2) Create another RSA keypair for signing the encrypted string before sending it and attach the signature to the payload. Key should use digest of SHA256 and be used for signing and verifying the decrypted string.
     public void processText() {
         isLoading.setValue(true);
+        try {
+            EncryptionUtils.createAsymmetricKeyPair();
+            KeyPair rsaKeyPair = EncryptionUtils.getAsymmetricKeyPair();
+            encryptedText = EncryptionUtils.encrypt(userText.getValue(), rsaKeyPair.getPublic());
+            signature = EncryptionUtils.signSHA256RSA(encryptedText, rsaKeyPair.getPrivate().toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         _toastText.setValue(String.format("Please minimize the app for at least %s sec", DELAY_IN_SEC));
     }
 
@@ -79,7 +94,7 @@ public class EncryptionViewModel extends ViewModel {
         if (isLoading.getValue()) {
             disposable.add(
                     Single.timer(DELAY_IN_SEC, TimeUnit.SECONDS)
-                    .flatMap(delay -> remoteRepo.sendPushNotification(storageRepo.getFirebaseNotificationToken(), userText.getValue(), "asdasdsa"))
+                    .flatMap(delay -> remoteRepo.sendPushNotification(storageRepo.getFirebaseNotificationToken(), encryptedText, signature))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSingleObserver<FcmResponse>() {
@@ -93,7 +108,7 @@ public class EncryptionViewModel extends ViewModel {
                             Timber.d("onError %s", e.getMessage());
                         }
                     })
-                    );
+            );
         }
     }
 

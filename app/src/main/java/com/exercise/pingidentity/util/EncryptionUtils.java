@@ -28,7 +28,7 @@ public class EncryptionUtils {
     final private static int KEY_SIZE_BIT = 1024;
     final private static String EMPTY_STR = "";
 
-    private KeyStore createKeyStore() {
+    private static KeyStore createKeyStore() {
         try {
             KeyStore keyStore = KeyStore.getInstance(ANDROID_KEYSTORE);
             keyStore.load(null);
@@ -39,7 +39,7 @@ public class EncryptionUtils {
 
     }
 
-    public KeyPair createAsymmetricKeyPair() {
+    public static KeyPair createAsymmetricKeyPair() {
         KeyPairGenerator generator;
         try {
             generator = KeyPairGenerator.getInstance(KeyProperties.KEY_ALGORITHM_RSA, ANDROID_KEYSTORE);
@@ -51,7 +51,7 @@ public class EncryptionUtils {
         }
     }
 
-    private void getKeyGenParameterSpec(KeyPairGenerator generator) {
+    private static void getKeyGenParameterSpec(KeyPairGenerator generator) {
         try {
             KeyGenParameterSpec.Builder builder = new KeyGenParameterSpec.Builder(KEY_ALIAS, KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
                     .setBlockModes(KeyProperties.BLOCK_MODE_ECB)
@@ -66,7 +66,7 @@ public class EncryptionUtils {
         }
     }
 
-    public KeyPair getAsymmetricKeyPair() {
+    public static KeyPair getAsymmetricKeyPair() {
         KeyStore keyStore = createKeyStore();
         try {
             PrivateKey privateKey = (PrivateKey) keyStore.getKey(KEY_ALIAS, null);
@@ -89,7 +89,7 @@ public class EncryptionUtils {
         }
     }
 
-    public String encrypt(String data, Key key) {
+    public static String encrypt(String data, Key key) {
         try {
             Cipher cipher = Cipher.getInstance(AES_NOPAD_TRANS);
             cipher.init(Cipher.ENCRYPT_MODE, key);
@@ -130,13 +130,9 @@ public class EncryptionUtils {
     }
 
     // Create base64 encoded signature using SHA256/RSA.
-    private static String signSHA256RSA(String input, String strPk) throws Exception {
-        // Remove markers and new line characters in private key
-        String realPK = strPk.replaceAll("-----END PRIVATE KEY-----", "")
-                .replaceAll("-----BEGIN PRIVATE KEY-----", "")
-                .replaceAll("\n", "");
+    public static String signSHA256RSA(String input, String strPk) throws Exception {
 
-        byte[] b1 = Base64.decode(realPK, Base64.DEFAULT);
+        byte[] b1 = Base64.decode(strPk, Base64.DEFAULT);
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(b1);
         KeyFactory kf = KeyFactory.getInstance("RSA");
 
