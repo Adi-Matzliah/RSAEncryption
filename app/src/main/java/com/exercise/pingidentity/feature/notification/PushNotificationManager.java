@@ -38,6 +38,7 @@ public class PushNotificationManager {
                     storageRepo.setFirebaseNotificationToken(token);
                     Timber.d("user FCM reg token is: %s", token);
                 });
+
     }
 
 }

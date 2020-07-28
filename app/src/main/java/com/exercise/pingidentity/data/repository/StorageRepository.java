@@ -12,9 +12,9 @@ public class StorageRepository {
     @NonNull
     private SharedPreferences sharedPref;
 
-     private static final String FIREBASE_PUSH_TOKEN_KEY = "firebase_notifications_token_key";
-    private static final String RSA_KEY = "rsa_key";
-
+    public static final String FIREBASE_PUSH_TOKEN_KEY = "firebase_notifications_token_key";
+    public static final String RSA_KEY = "rsa_key";
+    public static final String BIOMETRIC_TOGGLE_STATUS = "biometric_toggle_status";
 
     @Inject
     StorageRepository(@Nullable SharedPreferences sharedPref) {
@@ -37,4 +37,11 @@ public class StorageRepository {
         return sharedPref.getString(RSA_KEY, "");
     }
 
+    public void setBiometricToggleStatus(Boolean status)  {
+        sharedPref.edit().putBoolean(BIOMETRIC_TOGGLE_STATUS, status).commit();
+    }
+
+    public boolean getBiometricToggleStatus() {
+        return sharedPref.getBoolean(BIOMETRIC_TOGGLE_STATUS, false);
+    }
 }

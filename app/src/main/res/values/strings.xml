@@ -10,7 +10,7 @@
     <string name="fcm_message_body">Click here to see the decrypted text</string>
     <string name="default_notification_channel_id">fcm_default_channel</string>
     <string name="firebase_base_url">https://fcm.googleapis.com/</string>
-    <string name="decrypt_text_title">* Your decrypted== text is:</string>
+    <string name="decrypt_text_title">* Your decrypted text is:</string>
     <string name="fcm_message_title">You have new encrypted message!</string>
 
 </resources>

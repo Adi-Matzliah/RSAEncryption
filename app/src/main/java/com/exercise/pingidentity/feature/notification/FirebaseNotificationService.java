@@ -68,9 +68,7 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
         // Check if message contains a notification payload.
         if (remoteMessage.getData() != null) {
             Map data = remoteMessage.getData();
-            data.getOrDefault("encryptedString", "");
-            data.getOrDefault("signature", "");
-            sendNotification();
+            sendNotification(data);
             Timber.d("Push Message data: %s", data.toString());
         }
 
@@ -95,13 +93,6 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
     }
 
     /**
-     * Handle time allotted to BroadcastReceivers.
-     */
-    private void handleNow() {
-        Timber.d("Short lived task is done.");
-    }
-
-    /**
      * Persist token to third-party servers.
      *
      * Modify this method to associate the user's FCM InstanceID token with any server-side account
@@ -117,9 +108,11 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
      * Create and show a simple notification containing the received FCM message.
      *
      */
-    private void sendNotification() {
+    private void sendNotification(Map data) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("decrypted_text", (String) data.getOrDefault("encryptedString", ""));
+        intent.putExtra("decrypted_text2", (String) data.getOrDefault("signature", ""));
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 

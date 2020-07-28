@@ -83,6 +83,12 @@ public class EncryptionFragment extends DaggerFragment {
             });
     }
 
+    @Override
+    public void onStop() {
+        viewModel.createBackgroundTask();
+        super.onStop();
+    }
+
     private void openLockScreenSettings() {
         Intent intent = new Intent(DevicePolicyManager.ACTION_SET_NEW_PASSWORD);
         startActivity(intent);

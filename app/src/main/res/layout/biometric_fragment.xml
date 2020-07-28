@@ -6,6 +6,8 @@
 
     <data class="BiometricFragmentBinding">
 
+        <import type="android.view.View" />
+
         <import type="android.text.TextUtils" />
 
         <variable
@@ -35,6 +37,7 @@
             android:layout_marginTop="20dp"
             android:padding="10dp"
             android:text="@{viewModel.decryptedText}"
+            android:visibility="@{viewModel.isTextVisible ? View.VISIBLE : View.INVISIBLE}"
             android:textColor="@android:color/white"
             android:background="@color/colorPrimary"
             android:textSize="20sp"

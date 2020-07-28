@@ -1,8 +1,6 @@
 package com.exercise.pingidentity.feature.encryption;
 
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.biometric.BiometricManager;
 import androidx.lifecycle.LiveData;
@@ -13,10 +11,9 @@ import com.exercise.pingidentity.data.SingleLiveEvent;
 import com.exercise.pingidentity.data.repository.RemoteRepository;
 import com.exercise.pingidentity.data.repository.StorageRepository;
 import com.exercise.pingidentity.feature.notification.PushNotificationManager;
-import com.exercise.pingidentity.network.request.FcmRequest;
 import com.exercise.pingidentity.network.response.FcmResponse;
 
-import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -49,6 +46,8 @@ public class EncryptionViewModel extends ViewModel {
 
     private SingleLiveEvent<Boolean> _isBiometricAlertDialogVisible = new SingleLiveEvent<>();
 
+    private final static int DELAY_IN_SEC = 3;
+
     @NonNull
     private CompositeDisposable disposable = new CompositeDisposable();
 
@@ -66,8 +65,14 @@ public class EncryptionViewModel extends ViewModel {
 
 
     public void processText() {
-        //isLoading.setValue(true);
-        disposable.add(remoteRepo.sendPushNotification(storageRepo.getFirebaseNotificationToken(), "dsfdsf", "asdasdsa")
+        isLoading.setValue(true);
+    }
+
+    public void createBackgroundTask() {
+        if (isLoading.getValue()) {
+            disposable.add(
+                    Single.timer(DELAY_IN_SEC, TimeUnit.SECONDS)
+                    .flatMap(delay -> remoteRepo.sendPushNotification(storageRepo.getFirebaseNotificationToken(), userText.getValue(), "asdasdsa"))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new DisposableSingleObserver<FcmResponse>() {
@@ -77,11 +82,12 @@ public class EncryptionViewModel extends ViewModel {
                         }
 
                         @Override
-                    public void onError(Throwable e) {
+                        public void onError(Throwable e) {
                             Timber.d("onError %s", e.getMessage());
-                    }
-                })
-                    /*.onsubscribe(result -> Timber.d("sdfsdf"))*/);
+                        }
+                    })
+                    );
+        }
     }
 
     public LiveData<Boolean> isBiometricAlertDialogVisible() {
@@ -89,6 +95,7 @@ public class EncryptionViewModel extends ViewModel {
     }
 
     public void onBiometricToggle() {
+        storageRepo.setBiometricToggleStatus(isBiometricEnabled.getValue());
         if (isBiometricEnabled.getValue()) {
             switch (bioManager.canAuthenticate()) {
                 case BiometricManager.BIOMETRIC_SUCCESS:

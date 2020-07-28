@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'  // Google Services plugin
+apply plugin: 'androidx.navigation.safeargs'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -90,6 +91,11 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"// convert a retrofit call object to a RxJava object
     implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
+
+
+/* ----------- Job ---------- */
+    // WorkManager
+    implementation "android.arch.work:work-runtime:${versions.workManager}"
 
 /* ----------- Security ---------- */
     implementation "androidx.biometric:biometric:${versions.biometric}"
